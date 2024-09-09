@@ -1,14 +1,6 @@
 from typing import Any
 import os
 import pandas as pd
-import pymongo
-import json
-from ensure import ensure_annotations
-
-
-from typing import Any
-import os
-import pandas as pd
 from pymongo.mongo_client import MongoClient
 import json
 from ensure import ensure_annotations
@@ -57,15 +49,16 @@ class mongo_operation:
             collection=self.create_collection(collection_name)
             collection.insert_one(record)
     
-    def bulk_insert(self,datafile,collection_name:str=None):
+    def bulk_insert(self,datafile, collection_name:str=None):
         self.path=datafile
         
         if self.path.endswith('.csv'):
-            pd.read.csv(self.path,encoding='utf-8')
+            pd.read.csv(self.path, encoding = 'utf-8')
             
         elif self.path.endswith(".xlsx"):
-            dataframe=pd.read_excel(self.path,encoding='utf-8')
+            dataframe=pd.read_excel(self.path,encoding = 'utf-8')
             
-        datajson=json.loads(dataframe.to_json(orient='record'))
+        datajson=json.loads(dataframe.to_json(orient = 'record'))
         collection=self.create_collection()
         collection.insert_many(datajson)
+
