@@ -5,7 +5,6 @@ from pymongo.mongo_client import MongoClient
 import json
 from ensure import ensure_annotations
 
-
 class mongo_operation:
     __collection=None # here i have created a private/protected variable
     __database=None
@@ -29,12 +28,12 @@ class mongo_operation:
         if mongo_operation.__collection == None:
             database=self.create_database(collection)
             self.collection=database[self.collection_name]
-            mongo_operation.__collection = collection
+            mongo_operation.__collection=collection
         
         if mongo_operation.__collection != collection:
             database=self.create_database(collection)
-            self.collection = database[self.collection_name]
-            mongo_operation.__collection = collection
+            self.collection=database[self.collection_name]
+            mongo_operation.__collection=collection
             
         return self.collection
     
@@ -43,23 +42,20 @@ class mongo_operation:
             for data in record:
                 if type(data) != dict:
                     raise TypeError("record must be in the dict")    
-            collection = self.create_collection(collection_name)
+            collection=self.create_collection(collection_name)
             collection.insert_many(record)
         elif type(record) == dict:
-            collection = self.create_collection(collection_name)
+            collection=self.create_collection(collection_name)
             collection.insert_one(record)
     
     def bulk_insert(self,datafile, collection_name:str=None):
         self.path=datafile
-        
         if self.path.endswith('.csv'):
             pd.read.csv(self.path, encoding = 'utf-8')
-            
         elif self.path.endswith(".xlsx"):
             dataframe = pd.read_excel(self.path,encoding = 'utf-8')
-            
-        datajson = json.loads(dataframe.to_json(orient = 'record'))
-        collection = self.create_collection()
+        datajson=json.loads(dataframe.to_json(orient = 'record'))
+        collection=self.create_collection()
         collection.insert_many(datajson)
 
 
